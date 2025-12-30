@@ -4,6 +4,9 @@ SLASH_DSS1 = "/dss"
 
 local YELLOW = "FFFF00"
 
+-- per https://wowpedia.fandom.com/wiki/API_DeleteCursorItem DeleteCursorItem() can only be called once per hardware event, this addon is now effectively useless.
+--  cleaning up to only delete 1 shard per invoke
+
 --[[
 returns the input msg with escape sequences applied to add color to it in the UI
 @param msg - the input string
@@ -18,38 +21,12 @@ returns usage string
 ]]--
 local function getUsageString()
     local cmd = "/dss"
-    local usage = colorize("DeleteSoulShard Usage: ", YELLOW)..cmd.." <numOfShards>\n"
+    local usage = colorize("DeleteSoulShard Usage: ", YELLOW)..cmd.."\n"
     return usage
 end
 
---[[
-takes an input string and splits it into an array based on whitespace between characters
-@returns array
-]]--
-local function tokenize(input)
-    local tokens = {}
-    local i = 1
-    for token in string.gmatch(input, "%S+") do
-        tokens[i] = token
-        i = i + 1
-    end
-    return tokens
-end
-
 SlashCmdList["DSS"] = function(msg, editBox)
-    local tokens = tokenize(msg)
-    local tokenCount = table.maxn(tokens)
-
-    if (tokenCount < 1) then
-        editBox.chatFrame:AddMessage(getUsageString())
-        return false
-    end
-
-    local toDelete = tonumber(tokens[1])
-    if (toDelete == nil or toDelete < 1) then
-        editBox.chatFrame:AddMessage(getUsageString())
-        return false
-    end
+    local toDelete = 1
 
     ClearCursor()
     local deleted = 0
@@ -69,7 +46,7 @@ SlashCmdList["DSS"] = function(msg, editBox)
                 end
             end
 
-            if (deleted >= tonumber(tokens[1])) then
+            if (deleted >= toDelete) then
                 breakOuter = true
                 break
             end
@@ -80,7 +57,7 @@ SlashCmdList["DSS"] = function(msg, editBox)
         end
     end
 
-    editBox.chatFrame:AddMessage("Deleted "..deleted.."  shard(s)")
+    editBox.chatFrame:AddMessage("Deleted "..deleted.." shard")
 end
 
 print(getUsageString())

@@ -1,8 +1,8 @@
-## Interface: 30402
-## Title: Delete Soul Shard (/dss)
-## Notes: Command to delete a variable number of soul shard(s) from bags
+## Interface: 11053
+## Title: Delete Soul Shard (/dss) |TInterface/Addons/DeleteSoulShard/dss:16:16|t
+## Notes: Command to delete a soul shard from your bags
 ## Author: Plum
-## Version: 0.2
+## Version: 1.0.2
 
 # deps
 DeleteSoulShard.lua
