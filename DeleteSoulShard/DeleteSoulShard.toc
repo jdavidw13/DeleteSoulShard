@@ -1,0 +1,13 @@
+## Interface: 20505
+## Title: Delete Soul Shard (/dss)
+## Notes: Command to delete a soul shard from your bags
+## Author: Plum
+## Version: 2.0.0
+## IconTexture: Interface/AddOns/DeleteSoulShard/dss
+## SavedVariables: DeleteSoulShardDB
+
+## Category: Warlock
+
+DeleteSoulShard.lua
+DeleteSoulShard_Options.lua
+DeleteSoulShard_Minimap.lua
