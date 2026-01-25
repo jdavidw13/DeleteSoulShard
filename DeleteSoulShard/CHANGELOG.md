@@ -2,6 +2,11 @@
 
 All notable changes to Delete Soul Shard will be documented in this file.
 
+## [2.0.1] - 2026-01-24
+
+### Changed
+- Shards determined by itemID instead of localized name.
+
 ## [2.0.0] - 2026-01-23
 
 ### Added

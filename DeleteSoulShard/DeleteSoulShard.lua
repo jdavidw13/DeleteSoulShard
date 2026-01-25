@@ -3,6 +3,7 @@ local _, NS = ...
 SLASH_DSS1 = "/dss"
 
 local YELLOW = "FFFF00"
+local SOUL_SHARD_ID = 6265
 
 -- Default minimum number of shards to keep in bags
 local DEFAULT_MIN_SHARDS = 5
@@ -49,18 +50,22 @@ eventFrame:SetScript("OnEvent", function(self, event, addonName)
     end
 end)
 
+local function isShard(info)
+    if (info and info["itemID"] == SOUL_SHARD_ID) then
+        return true
+    else
+        return false
+    end
+end
+
 local function countSoulShards()
     local count = 0
     for bagId = 0, NUM_BAG_SLOTS, 1 do
         local bagSize = C_Container.GetContainerNumSlots(bagId)
         for bagSlotId = 1, bagSize, 1 do
             local info = C_Container.GetContainerItemInfo(bagId, bagSlotId)
-            if (info) then
-                local itemID = info["itemID"]
-                local name = GetItemInfo(itemID)
-                if (name == "Soul Shard") then
-                    count = count + 1
-                end
+            if (isShard(info)) then
+                count = count + 1
             end
         end
     end
@@ -84,15 +89,11 @@ SlashCmdList["DSS"] = function(msg, editBox)
         local bagSize = C_Container.GetContainerNumSlots(bagId)
         for bagSlotId = 1, bagSize, 1 do
             local info = C_Container.GetContainerItemInfo(bagId, bagSlotId);
-            if (info) then
-                local itemID = info["itemID"];
-                local name = GetItemInfo(itemID)
-                if (name == "Soul Shard") then
-                    editBox.chatFrame:AddMessage("Deleting shard from bag "..bagId.." slot "..bagSlotId)
-                    C_Container.PickupContainerItem(bagId, bagSlotId)
-                    DeleteCursorItem()
-                    deleted = deleted + 1
-                end
+            if (isShard(info)) then
+                editBox.chatFrame:AddMessage("Deleting shard from bag "..bagId.." slot "..bagSlotId)
+                C_Container.PickupContainerItem(bagId, bagSlotId)
+                DeleteCursorItem()
+                deleted = deleted + 1
             end
 
             if (deleted >= toDelete) then
