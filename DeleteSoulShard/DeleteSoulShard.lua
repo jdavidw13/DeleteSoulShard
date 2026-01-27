@@ -76,7 +76,7 @@ SlashCmdList["DSS"] = function(msg, editBox)
     local totalShards = countSoulShards()
 
     if (totalShards <= NS.minShardsToKeep) then
-        editBox.chatFrame:AddMessage("You have "..totalShards.." shard(s). Keeping minimum of "..NS.minShardsToKeep..".")
+        print("You have "..totalShards.." shard(s). Keeping minimum of "..NS.minShardsToKeep..".")
         return
     end
 
@@ -90,7 +90,7 @@ SlashCmdList["DSS"] = function(msg, editBox)
         for bagSlotId = 1, bagSize, 1 do
             local info = C_Container.GetContainerItemInfo(bagId, bagSlotId);
             if (isShard(info)) then
-                editBox.chatFrame:AddMessage("Deleting shard from bag "..bagId.." slot "..bagSlotId)
+                print("Deleting shard from bag "..bagId.." slot "..bagSlotId)
                 C_Container.PickupContainerItem(bagId, bagSlotId)
                 DeleteCursorItem()
                 deleted = deleted + 1
@@ -107,5 +107,5 @@ SlashCmdList["DSS"] = function(msg, editBox)
         end
     end
 
-    editBox.chatFrame:AddMessage("Deleted "..deleted.." shard")
+    print("Deleted "..deleted.." shard")
 end
