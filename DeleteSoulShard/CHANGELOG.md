@@ -2,6 +2,11 @@
 
 All notable changes to Delete Soul Shard will be documented in this file.
 
+## [2.0.2] - 2026-01-26
+
+### Added
+- `/dss` can now be used in macros.
+
 ## [2.0.1] - 2026-01-24
 
 ### Changed

@@ -2,7 +2,7 @@
 ## Title: Delete Soul Shard (/dss)
 ## Notes: Command to delete a soul shard from your bags
 ## Author: Plum
-## Version: 2.0.1
+## Version: 2.0.2
 ## IconTexture: Interface/AddOns/DeleteSoulShard/dss
 ## SavedVariables: DeleteSoulShardDB
 
