@@ -95,11 +95,32 @@ editBox:SetScript("OnEditFocusLost", function(self)
     slider:SetValue(value)
 end)
 
+-- Print Status label
+local printStatusLabel = optionsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+printStatusLabel:SetPoint("TOPLEFT", infoNote, "BOTTOMLEFT", 0, -24)
+printStatusLabel:SetText("Print Status Messages To Chat")
+
+-- Checkbox for Print Status Messages
+local printStatusCheckbox = CreateFrame("CheckButton", "DeleteSoulShardPrintStatusCheckbox", optionsPanel, "InterfaceOptionsCheckButtonTemplate")
+printStatusCheckbox:SetPoint("LEFT", printStatusLabel, "RIGHT", 8, 0)
+printStatusCheckbox.Text:SetText("")
+
+printStatusCheckbox:SetScript("OnClick", function(self)
+    local isChecked = self:GetChecked()
+    if DeleteSoulShardDB then
+        DeleteSoulShardDB.printStatus = isChecked
+    end
+    NS.printStatus = isChecked
+end)
+
 -- Initialize values when panel shows
 optionsPanel:SetScript("OnShow", function(self)
     local currentValue = (DeleteSoulShardDB and DeleteSoulShardDB.minShardsToKeep) or 5
     slider:SetValue(currentValue)
     editBox:SetText(tostring(currentValue))
+
+    local printStatusValue = (DeleteSoulShardDB and DeleteSoulShardDB.printStatus) or false
+    printStatusCheckbox:SetChecked(printStatusValue)
 end)
 
 -- Register with Interface Options (modern Settings API)

@@ -2,6 +2,11 @@
 
 All notable changes to Delete Soul Shard will be documented in this file.
 
+## [2.1.0] - 2026-01-31
+
+### Added
+- **Print Status Messages option**: New checkbox in the options panel to toggle status messages in chat when deleting shards.
+
 ## [2.0.2] - 2026-01-26
 
 ### Added

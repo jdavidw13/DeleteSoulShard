@@ -9,6 +9,9 @@ local SOUL_SHARD_ID = 6265
 local DEFAULT_MIN_SHARDS = 5
 NS.minShardsToKeep = DEFAULT_MIN_SHARDS
 
+local DEFAULT_PRINT_STATUS = true
+NS.printStatus = DEFAULT_PRINT_STATUS
+
 -- per https://wowpedia.fandom.com/wiki/API_DeleteCursorItem DeleteCursorItem() can only be called once per hardware event, this addon is now effectively useless.
 --  cleaning up to only delete 1 shard per invoke
 
@@ -27,7 +30,8 @@ returns usage string
 local function getUsageString()
     local cmd = "/dss"
     local usage = colorize("DeleteSoulShard Usage: ", YELLOW)..cmd.."\n"
-    usage = usage.."Minimum shards to keep: "..NS.minShardsToKeep.."\n"
+    usage = usage .. "  Minimum shards to keep: " .. NS.minShardsToKeep .. "\n"
+    usage = usage .. "  Print status messages: " .. tostring(NS.printStatus) .. "\n"
     return usage
 end
 
@@ -43,7 +47,11 @@ eventFrame:SetScript("OnEvent", function(self, event, addonName)
         if DeleteSoulShardDB.minShardsToKeep == nil then
             DeleteSoulShardDB.minShardsToKeep = DEFAULT_MIN_SHARDS
         end
+        if DeleteSoulShardDB.printStatus == nil then
+            DeleteSoulShardDB.printStatus = DEFAULT_PRINT_STATUS
+        end
         NS.minShardsToKeep = DeleteSoulShardDB.minShardsToKeep
+        NS.printStatus = DeleteSoulShardDB.printStatus
         self:UnregisterEvent("ADDON_LOADED")
 
         print(getUsageString())
@@ -76,7 +84,9 @@ SlashCmdList["DSS"] = function(msg, editBox)
     local totalShards = countSoulShards()
 
     if (totalShards <= NS.minShardsToKeep) then
-        print("You have "..totalShards.." shard(s). Keeping minimum of "..NS.minShardsToKeep..".")
+        if (NS.printStatus) then
+            print("You have "..totalShards.." shard(s). Keeping minimum of "..NS.minShardsToKeep..".")
+        end
         return
     end
 
@@ -90,7 +100,9 @@ SlashCmdList["DSS"] = function(msg, editBox)
         for bagSlotId = 1, bagSize, 1 do
             local info = C_Container.GetContainerItemInfo(bagId, bagSlotId);
             if (isShard(info)) then
-                print("Deleting shard from bag "..bagId.." slot "..bagSlotId)
+                if (NS.printStatus) then
+                    print("Deleting shard from bag "..bagId.." slot "..bagSlotId)
+                end
                 C_Container.PickupContainerItem(bagId, bagSlotId)
                 DeleteCursorItem()
                 deleted = deleted + 1
@@ -107,5 +119,7 @@ SlashCmdList["DSS"] = function(msg, editBox)
         end
     end
 
-    print("Deleted "..deleted.." shard")
+    if (NS.printStatus) then
+        print("Deleted "..deleted.." shard")
+    end
 end
