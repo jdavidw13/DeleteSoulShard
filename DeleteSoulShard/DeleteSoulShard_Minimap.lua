@@ -19,12 +19,26 @@ border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
 border:SetSize(56, 56)
 border:SetPoint("TOPLEFT", minimapButton, "TOPLEFT", 0, 0)
 
--- Position around minimap
+-- Position around minimap edge, respecting actual minimap shape/size
 local function UpdatePosition(angle)
-    local radius = 80
-    local x = math.cos(angle) * radius
-    local y = math.sin(angle) * radius
-    minimapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
+    local mw = Minimap:GetWidth() / 2
+    local mh = Minimap:GetHeight() / 2
+    local cos_a = math.cos(angle)
+    local sin_a = math.sin(angle)
+    local minimapShape = GetMinimapShape and GetMinimapShape() or "ROUND"
+    local x, y
+    if minimapShape == "ROUND" then
+        x = cos_a * mw
+        y = sin_a * mh
+    else
+        local tx = (cos_a ~= 0) and math.abs(mw / cos_a) or math.huge
+        local ty = (sin_a ~= 0) and math.abs(mh / sin_a) or math.huge
+        local t = math.min(tx, ty)
+        x = cos_a * t
+        y = sin_a * t
+    end
+    -- offset center outward by half button size so edge sits against minimap
+    minimapButton:SetPoint("CENTER", Minimap, "CENTER", x + cos_a * 16, y + sin_a * 16)
 end
 
 -- Dragging functionality
@@ -92,6 +106,9 @@ initFrame:SetScript("OnEvent", function(self, event, addonName)
             DeleteSoulShardDB.minimapAngle = 2.5 -- Default position (upper left)
         end
         UpdatePosition(DeleteSoulShardDB.minimapAngle)
+        if DeleteSoulShardDB.showMinimapButton == false then
+            minimapButton:Hide()
+        end
         self:UnregisterEvent("ADDON_LOADED")
     end
 end)

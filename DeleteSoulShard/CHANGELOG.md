@@ -2,6 +2,15 @@
 
 All notable changes to Delete Soul Shard will be documented in this file.
 
+## [2.1.1] - 2026-06-27
+
+### Added
+- **Show Minimap Button option**: New checkbox in the options panel to show or hide the minimap button.
+
+### Fixed
+- Minimap button now positions correctly along the perimeter of non-circular (e.g. square) minimaps by respecting the actual minimap shape via `GetMinimapShape()`.
+- Minimap button edge now sits flush against the minimap perimeter instead of the button center being placed at the edge.
+
 ## [2.1.0] - 2026-01-31
 
 ### Added

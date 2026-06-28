@@ -113,6 +113,31 @@ printStatusCheckbox:SetScript("OnClick", function(self)
     NS.printStatus = isChecked
 end)
 
+-- Show Minimap Button label
+local showMinimapLabel = optionsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+showMinimapLabel:SetPoint("TOPLEFT", printStatusLabel, "BOTTOMLEFT", 0, -24)
+showMinimapLabel:SetText("Show Minimap Button")
+
+-- Checkbox for Show Minimap Button
+local showMinimapCheckbox = CreateFrame("CheckButton", "DeleteSoulShardShowMinimapCheckbox", optionsPanel, "InterfaceOptionsCheckButtonTemplate")
+showMinimapCheckbox:SetPoint("LEFT", showMinimapLabel, "RIGHT", 8, 0)
+showMinimapCheckbox.Text:SetText("")
+
+showMinimapCheckbox:SetScript("OnClick", function(self)
+    local isChecked = self:GetChecked()
+    if DeleteSoulShardDB then
+        DeleteSoulShardDB.showMinimapButton = isChecked
+    end
+    NS.showMinimapButton = isChecked
+    if NS.minimapButton then
+        if isChecked then
+            NS.minimapButton:Show()
+        else
+            NS.minimapButton:Hide()
+        end
+    end
+end)
+
 -- Initialize values when panel shows
 optionsPanel:SetScript("OnShow", function(self)
     local currentValue = (DeleteSoulShardDB and DeleteSoulShardDB.minShardsToKeep) or 5
@@ -121,6 +146,10 @@ optionsPanel:SetScript("OnShow", function(self)
 
     local printStatusValue = (DeleteSoulShardDB and DeleteSoulShardDB.printStatus) or false
     printStatusCheckbox:SetChecked(printStatusValue)
+
+    local showMinimapValue = (DeleteSoulShardDB and DeleteSoulShardDB.showMinimapButton)
+    if showMinimapValue == nil then showMinimapValue = true end
+    showMinimapCheckbox:SetChecked(showMinimapValue)
 end)
 
 -- Register with Interface Options (modern Settings API)

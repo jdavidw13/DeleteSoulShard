@@ -12,6 +12,9 @@ NS.minShardsToKeep = DEFAULT_MIN_SHARDS
 local DEFAULT_PRINT_STATUS = true
 NS.printStatus = DEFAULT_PRINT_STATUS
 
+local DEFAULT_SHOW_MINIMAP = true
+NS.showMinimapButton = DEFAULT_SHOW_MINIMAP
+
 -- per https://wowpedia.fandom.com/wiki/API_DeleteCursorItem DeleteCursorItem() can only be called once per hardware event, this addon is now effectively useless.
 --  cleaning up to only delete 1 shard per invoke
 
@@ -50,8 +53,12 @@ eventFrame:SetScript("OnEvent", function(self, event, addonName)
         if DeleteSoulShardDB.printStatus == nil then
             DeleteSoulShardDB.printStatus = DEFAULT_PRINT_STATUS
         end
+        if DeleteSoulShardDB.showMinimapButton == nil then
+            DeleteSoulShardDB.showMinimapButton = DEFAULT_SHOW_MINIMAP
+        end
         NS.minShardsToKeep = DeleteSoulShardDB.minShardsToKeep
         NS.printStatus = DeleteSoulShardDB.printStatus
+        NS.showMinimapButton = DeleteSoulShardDB.showMinimapButton
         self:UnregisterEvent("ADDON_LOADED")
 
         print(getUsageString())
